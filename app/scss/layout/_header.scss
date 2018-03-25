@@ -1,0 +1,52 @@
+@import "../base/variables";
+
+.header-box {
+  width: 100%;
+  min-height: $min-height;
+  background-color: $white;
+  background-image: url($img-header-mobile);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.header__title {
+  margin: 0;
+  padding: 3.6em 0;
+  font-weight: $fontWeightBlack;
+  font-size: 1em;
+  text-align: center;
+  color: $black;
+  text-shadow: 0 0 10px $orange;
+  text-transform: uppercase;
+}
+
+.header__line {
+  position: relative;
+  top: -.2em;
+  border-color: $black;
+  height: 3px;
+  background-color: $black;
+  width: 13%;
+  display: inline-block;
+  margin: 0 .2em;
+}
+
+.header--vertical {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: .6em;
+  font-size: 1.6em;
+  margin-top: 1.8em;
+}
+.header-element {
+  width: 100%;
+  background-color: $light-pink;
+  text-align: center;
+  padding: .6em .2em;
+}
+.header {
+  margin: 0;
+  padding: 0;
+  font-size: 1.2em;
+}

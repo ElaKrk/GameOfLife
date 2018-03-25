@@ -1,0 +1,31 @@
+@import "../base/variables";
+
+.nav__img {
+    height: 50px;
+    width: auto;
+}
+.nav__img--left {
+    padding-top: 13px; 
+    padding-left: 13px;
+}
+.nav__img--center {
+    margin: 0 auto;
+    background-color: $light-pink;
+}
+.img--center {
+    margin: 0 auto;
+    padding-top: 13px;
+}
+.img-svg {
+    height: 50px;
+    width: 100px;
+    display: block;
+    &:hover {
+        fill: $pink;
+    }
+}
+.img--big {
+    width: 200px;   
+    border: 2px solid black;
+
+}

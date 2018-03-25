@@ -1,0 +1,24 @@
+.grid-container {
+    display: grid;
+    grid-template-areas: "header" "img" "main";
+    text-align: justify;
+
+}
+.grid-img {
+    grid-area: img;
+    text-align: center;
+}
+.grid-header {
+    text-indent: 1.2em;
+    grid-area: header;
+
+}
+.grid-main {
+    grid-area: main;
+    text-indent: 1.2em;
+}
+    
+.grid-quote {
+    font-size: 0.8em;
+    font-style: italic;
+}

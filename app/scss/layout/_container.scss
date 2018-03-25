@@ -1,0 +1,17 @@
+.box--main {
+    width: 90%;
+    margin: 0 auto;
+}
+
+//desktop
+.main {
+    width: 100%;
+    height: 509px;
+    min-height: $min-height;
+    background-color: $white;
+    // background-image: url($img-main-mobile);
+    // background-repeat: no-repeat;
+    // background-position: center;
+    // background-size: cover;
+    // background-attachment: fixed;
+}
