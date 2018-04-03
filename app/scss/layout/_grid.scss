@@ -1,8 +1,8 @@
 .grid-container {
     display: grid;
+}
+.grid-container--main {
     grid-template-areas: "header" "img" "main";
-    text-align: justify;
-
 }
 .grid-img {
     grid-area: img;
@@ -11,14 +11,35 @@
 .grid-header {
     text-indent: 1.2em;
     grid-area: header;
-
+    padding: 1em;
 }
 .grid-main {
     grid-area: main;
     text-indent: 1.2em;
+    padding: 1em;
+    
 }
     
 .grid-quote {
-    font-size: 0.8em;
+    margin: .4em;
+    padding: 1em;
+    font-size: .9em;
+    word-spacing: .2em;
     font-style: italic;
+    border-top: 2px solid $light-blue;
+    border-bottom: 2px solid $light-blue;
+}
+.grid-header {
+    grid-template-columns: 40% 60%;
+    justify-items: center;
+}
+.grid-box-buttons {
+    margin-top: .1em;
+    display: grid;
+    grid-template-columns: 1fr 32% 1fr;
+    grid-template-rows: 30px 30px;
+    width: 100%;
+    grid-auto-flow: row;
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
 }

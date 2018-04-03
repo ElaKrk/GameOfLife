@@ -1,60 +1,109 @@
 document.addEventListener("DOMContentLoaded", function (event) {
 
+  function clearGameArea() {
+    const gameArea = document.querySelector(".js-game");
+    gameArea.innerText = "";
+  }
+
   //Create all areas in the game
-  (() => {
-    const gameArea = document.querySelector(".game");
-    for (let i = 0; i < 40; i++) {
+  function createAllareas(widthOfWindow) {
+    const gameArea = document.querySelector(".js-game");
+    for (let i = 0; i < 80; i++) {
       const row = document.createElement("div");
-      for (let j = 0; j < 80; j++) {
+      for (let j = 0; j < widthOfWindow; j++) {
         const field = document.createElement("div");
         row.appendChild(field);
       }
       gameArea.appendChild(row);
     }
-    return gameArea;
-  })();
+  }
   
-  const navButton = document.querySelector(".nav-button");
-  const sideNavigation = document.querySelector(".sidenav");
+  function createGame(window) {
+    if (window.innerWidth > 768) {
+      createAllareas(160);
+    } else {
+      createAllareas(80);
+      
+    }
+  };
+
+  function adjustBackgroundSizeToWindowHeight(window) {
+    const headerArea = document.querySelector(".header-box");
+    const height = parseFloat(window.innerHeight);
+    headerArea.style.height = `${height}px`;
+  }
+
+  const navButton = document.querySelector(".js-nav-button");
+  const sideNavigation = document.querySelector(".js-sidenav");
   const mainNavigation = document.querySelector(".nav");
   const title = document.querySelector(".header__title");
+  const headerContainer = document.querySelector(".box--large");
+  const headerButton = document.querySelector(".header__button");
+  const closeSign = document.querySelector(".js-nav__close-sign");
+  const game = document.querySelector(".js-game");
 
   navButton.addEventListener("click", () => {
+    headerButton.style.display = "none";
     sideNavigation.style.width = "60%";
     mainNavigation.style.height = "0";
     title.innerText = "GAME";
     title.setAttribute("class", "header--vertical");
+    headerContainer.setAttribute("class", "grid-container grid-header");
   })
 
-  const closeSign = document.querySelector(".nav__close-sign");
   closeSign.addEventListener("click", () => {
+    headerButton.style.display = "block";
     sideNavigation.style.width = "0";
     mainNavigation.style.height = "50px";
     const horizontalLine = document.createElement("hr");
     horizontalLine.setAttribute("class", "header__line");
     const secondHorizontalLine = horizontalLine.cloneNode(true);
-    
+    headerContainer.setAttribute("class", "box--large");
+
     title.innerText = "Game of life";
     title.setAttribute("class", "header__title");
-    
+
     title.insertAdjacentElement('afterbegin', horizontalLine);
     title.appendChild(secondHorizontalLine);
   })
 
-  const startButton = document.querySelector(".box-butons__button--start");
-  const stopButton = document.querySelector(".box-butons__button--stop");
-  const resetButton = document.querySelector(".box-butons__button--reset");
-  const configurationOneButton = document.querySelector(".box-butons__button--ex1");
-  const configurationTwoButton = document.querySelector(".box-butons__button--ex2");
-  const configurationThreeButton = document.querySelector(".box-butons__button--ex3");
+  function adjustSizeOfGame(event) {
+    if (window.innerWidth > 768) {
+      const widthOfTheGame = game.offsetWidth;
+      game.style.height = `${widthOfTheGame/2}px`
+    } else {
+      const widthOfTheGame = game.offsetWidth;
+      game.style.height = `${widthOfTheGame}px`
+    }
+  }
+
+   
+  adjustBackgroundSizeToWindowHeight(window);
+  adjustSizeOfGame();
+  createGame(window);
+  
+
+  window.addEventListener("resize", () => {
+    adjustBackgroundSizeToWindowHeight(window);
+    adjustSizeOfGame();
+    clearGameArea();
+    createGame(window);
+  });
 
 
-  const oneRow = document.querySelector(".game > div");
+  const startButton = document.querySelector(".js-box-butons__button--start");
+  const stopButton = document.querySelector(".js-box-butons__button--stop");
+  const resetButton = document.querySelector(".js-box-butons__button--reset");
+  const configurationOneButton = document.querySelector(".js-box-butons__button--ex1");
+  const configurationTwoButton = document.querySelector(".js-box-butons__button--ex2");
+  const configurationThreeButton = document.querySelector(".js-box-butons__button--ex3");
+
+  const oneRow = document.querySelector(".js-game > div");
   const listOfAreasInOneRow = oneRow.querySelectorAll("div");
   const lengthOfRow = listOfAreasInOneRow.length;
-  const allRows = document.querySelectorAll(".game > div");
+  const allRows = document.querySelectorAll(".js-game > div");
   const numberOfRows = allRows.length;
-  const listOfAreasInGame = document.querySelectorAll(".game > div div");
+  const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
   const numberOfAreasInGame = listOfAreasInGame.length;
 
   const indexOfMiddleField = (((numberOfRows / 2) - 1) * lengthOfRow + (lengthOfRow / 2));
@@ -64,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     for (let k = 0; k < numberOfAreasInGame; k += 1) {
       listOfAreasInGame[k].addEventListener("click", () => {
         if (gameStarted == false) {
+          console.log("click");
           if (listOfAreasInGame[k].hasAttribute("class") && gameStarted == false) {
             listOfAreasInGame[k].removeAttribute("class");
           } else if (gameStarted == false) {
@@ -139,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     })
   }
 
-  function countAreasFromTheMiddle(list){
+  function countAreasFromTheMiddle(list) {
     const listOfAreasCountedFromTheMiddle = [];
     for (let i = 0; i < list.length; i++) {
       listOfAreasCountedFromTheMiddle.push(indexOfMiddleField + list[i]);
@@ -147,33 +197,52 @@ document.addEventListener("DOMContentLoaded", function (event) {
     };
     return listOfAreasCountedFromTheMiddle;
   }
-  
-  function clearAllAreas(){
+
+  function clearAllAreas() {
     for (let k = 0; k < numberOfAreasInGame; k += 1) {
       listOfAreasInGame[k].removeAttribute("class");
     }
   }
 
-  function makeChosenAreasAlive(lengthOfList, list){
+  function makeChosenAreasAlive(lengthOfList, list) {
     for (let i = 0; i < lengthOfList; i += 1) {
       listOfAreasInGame[list[i]].setAttribute("class", "game-area--alive");
     }
   }
- 
+
   function exampleOne() {
     configurationOneButton.addEventListener("click", () => {
-      const listOne = [2, 78, 82, 158, 160, 162];
-      const listOfAreasExOne = countAreasFromTheMiddle(listOne);
+      const listOne = [-1042, -1041, -1040, -1039, -962, -961, -958, -880, -877,
+      -799, -798, -562, -561, -482, -481, -402, -401, -330, -251, -249, -236,
+      -235, -234, -229, -228, -172, -169, -156, -155, -154, -149, -148, -92,
+      -90, -70, -68, -12, -11, -6, -5, -4, 9, 12, 68, 69, 74, 75, 76, 89, 91,
+        170, 241, 242, 321, 322, 401, 402, 638, 639, 717, 720, 798, 801, 802,
+        879, 880, 881, 882];
+      const listOfAreasExOne = [];
+      for (let i = 0; i < listOne.length; i++) {
+        listOfAreasExOne.push(indexOfMiddleField + listOne[i]);
+      };
       const lengthListOfAreasExOne = listOfAreasExOne.length;
       clearAllAreas();
       makeChosenAreasAlive(lengthListOfAreasExOne, listOfAreasExOne);
-   })
+    })
   }
 
   function exampleTwo() {
     configurationTwoButton.addEventListener("click", () => {
-      const listTwo = [2, 78, 82, 157, 159, 160, 161, 163, 236, 238, 242, 244, 315, 317, 323, 325, 396, 404];
-      const listOfAreasExTwo = countAreasFromTheMiddle(listTwo);
+      const listTwo = [77, 76, 156, 157, -2, -83, -84, 316, 315, 395, 396, 478,
+        559, 562, 642, 712, 792, 872, 871, 790, 4, -76, 85, 86, 166, 167, 247,
+        326, 8, 9, -70, -151, -152, -232, -231, -312, -393, -472, -471, -391,
+        -148, -228, -67, -307, -306, -386, -225, -145, -65, 15, -64, -61, -141,
+        -60, -139, -219, -299, -300, -301, -458, -457, -536, -616, -697, -698,
+        -619, -539, -790, -789, -869, -870, -1257, -1258, -1259, -725, -805, -885,
+        -1043, -1042, -1041, -648, -568, -569, -649, -657, -658, -578, -579, -739,
+        -823, -905, -985, -1065, -827, -908, -909, -989, -1069, -1148, -1147, -1226,
+        -1225, -1305, -1224, -1223, -1143, -1142];
+      const listOfAreasExTwo = [];
+      for (let i = 0; i < listTwo.length; i++) {
+        listOfAreasExTwo.push(indexOfMiddleField + listTwo[i]);
+      };
       const lengthListOfAreasExTwo = listOfAreasExTwo.length;
       clearAllAreas();
       makeChosenAreasAlive(lengthListOfAreasExTwo, listOfAreasExTwo);
@@ -182,22 +251,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   function exampleThree() {
     configurationThreeButton.addEventListener("click", () => {
-      const listThree = [-1042, -1041, -1040, -1039, -962, -961, -958, -880, -877,
-        -799, -798, -562, -561, -482, -481, -402, -401, -330, -251, -249, -236,
-        -235, -234, -229, -228, -172, -169, -156, -155, -154, -149, -148, -92,
-        -90, -70, -68, -12, -11, -6, -5, -4, 9, 12, 68, 69, 74, 75, 76, 89, 91,
-          170, 241, 242, 321, 322, 401, 402, 638, 639, 717, 720, 798, 801, 802,
-          879, 880, 881, 882];
-      const listOfAreasExThree = [];
-      for (let i = 0; i < listThree.length; i++) {
-        listOfAreasExThree.push(indexOfMiddleField + listThree[i]);
-      };
+      const listThree = [2, 78, 82, 158, 160, 162];
+      const listOfAreasExThree = countAreasFromTheMiddle(listThree);
       const lengthListOfAreasExThree = listOfAreasExThree.length;
       clearAllAreas();
       makeChosenAreasAlive(lengthListOfAreasExThree, listOfAreasExThree);
     })
   }
-  
+
   function stopTheGame() {
     stopButton.addEventListener("click", () => {
       gameStarted = false;
@@ -219,4 +280,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
   exampleOne();
   exampleTwo();
   exampleThree();
-  });
+});

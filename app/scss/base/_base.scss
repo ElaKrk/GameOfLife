@@ -8,9 +8,12 @@ body {
     margin: 0;
     padding: 0;
     font-family: $font-family-primary;
-    font-size: 16px;
+    font-size: 14px;
     text-align: justify;
-    background: $white;
+    background: $light-grey;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top,$light-blue, $white);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, $light-blue, $very-light-green); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      
 }
 html {
     width: 100%;

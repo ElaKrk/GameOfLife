@@ -1,5 +1,28 @@
 .header__button {
-    margin: 0 auto;
-    align-items: center;
-    display: block;
+  margin: 0 auto;
+  align-items: center;
+  display: block;
+  width: 100%;
+  padding: 2em 0;
+}
+.button__img {
+  display: block;
+  margin: 0 auto;
+  transition: transform .6s;
+  &:hover {
+    transform: scale(1.4);
   }
+}
+.box-butons__button {
+  margin: 0;
+  width: 100%;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: .8em;
+  border: 1px solid $blue;
+  &:hover {
+    color: $orange;
+    text-shadow: 2px 2px 1px $black;
+    background-color: $pink;
+  }
+}

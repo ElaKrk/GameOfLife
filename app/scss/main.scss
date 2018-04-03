@@ -2,13 +2,16 @@
 @import "./base/mixins";
 @import "./base/variables";
 
+@import "./layout/container";
+@import "./layout/footer";
 @import "./layout/grid";
 @import "./layout/header";
-@import "./layout/flex";
-@import "./layout/container";
 
 @import "./module/buttons";
-@import "./module/navigation";
-@import "./module/images";
-@import "./module/titles";
+@import "./module/contact";
+@import "./module/font";
 @import "./module/game";
+@import "./module/images";
+@import "./module/lists";
+@import "./module/navigation";
+@import "./module/titles";

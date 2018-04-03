@@ -1,16 +1,28 @@
 @import "../base/variables";
+@import "../base/mixins";
 
 .nav__img {
     height: 50px;
     width: auto;
+    @include sgBreakpoint(medium-up) {
+        width: 150px;
+        display: inline-block;
+    }
 }
 .nav__img--left {
     padding-top: 13px; 
     padding-left: 13px;
+    @include sgBreakpoint(medium-up) {
+        display: none;
+    }
 }
 .nav__img--center {
     margin: 0 auto;
-    background-color: $light-pink;
+    background-color: $light-grey;
+    @include sgBreakpoint(medium-up) {
+        margin: .3em 0 0 1em;
+        flex-grow: 3;
+    }
 }
 .img--center {
     margin: 0 auto;
@@ -18,14 +30,21 @@
 }
 .img-svg {
     height: 50px;
-    width: 100px;
+    width: 70px;
     display: block;
+}
+.img-svg--center {
+    margin: 0 auto;
+    margin-top: 3em;
+}
+.img-svg__link {
     &:hover {
         fill: $pink;
     }
 }
 .img--big {
-    width: 200px;   
-    border: 2px solid black;
-
+    width: 90%;   
+    @include sgBreakpoint(medium-up) {
+       width: 50%;
+    }
 }

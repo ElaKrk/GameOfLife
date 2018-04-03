@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="eng">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -20,28 +20,28 @@
       />
     </symbol>
   </svg>
-
   <nav class="nav">
-    <ul class="sidenav">
-      <div class="nav__img nav__img--center">
-        <span class="nav__close-sign">&#x2716</span>
+
+    <ul class="sidenav js-sidenav">
+      <div class="nav__img img-svg__link nav__img--center">
+        <span class="nav__close-sign js-nav__close-sign">&#x2716</span>
         <a class="nav__link-img" href="#contact">
-          <svg class="img-svg img--center">
+          <svg class="img-svg img-svg__link img--center">
             <use xlink:href="#logo"></use>
           </svg>
         </a>
       </div>
 
-      <li class="sidenav__li sidenav__li--spread">
+      <li class="sidenav__li">
         <a class="nav__link" href="#about">about</a>
       </li>
-      <li class="sidenav__li sidenav__li--spread">
+      <li class="sidenav__li">
         <a class="nav__link" href="#rules">rules</a>
       </li>
-      <li class="sidenav__li sidenav__li--spread">
+      <li class="sidenav__li">
         <a class="nav__link" href="#game">game</a>
       </li>
-      <li class="sidenav__li sidenav__li--spread">
+      <li class="sidenav__li">
         <a class="nav__link" href="#contact">contact</a>
       </li>
     </ul>
@@ -52,7 +52,7 @@
         </svg>
       </a>
     </div>
-    <div class="nav-button">
+    <div class="nav-button js-nav-button">
       <span class="nav-button__line"></span>
       <span class="nav-button__line"></span>
       <span class="nav-button__line"></span>
@@ -61,13 +61,13 @@
     </div>
   </nav>
   <header class="header-box">
-    <div class="box--main box--flexbox">
+    <div class="box--large">
       <h1 class="header__title">
         <hr class="header__line">Game of life
         <hr class="header__line">
       </h1>
-      <a href="#contact">
-        <img class="header__button" src="./images/arr-mobile.gif" alt="play button" title="play">
+      <a href="#contact" class="header__button">
+        <img class="button__img" src="./images/arr-mobile.gif" alt="play button" title="play">
       </a>
     </div>
   </header>
@@ -75,16 +75,15 @@
     <section>
       <article>
         <div class="header-element">
-          <div class="box--main">
-            <h2 class="header" id="about">About
-              <span class="title">GAME OF LIFE</span>
+          <div class="box--main box--main__header">
+            <h2 class="header" id="about">About game of life
             </h2>
           </div>
         </div>
         <div class="box--main">
-          <div class="grid-container">
+          <div class="grid-container grid-container--main">
             <div class="grid-img">
-                <img class="img--big" src="images/conway.jpg" alt="John Conway" title="John Conway">
+              <img class="img--big" src="images/conway.jpg" alt="John Conway" title="John Conway">
             </div>
             <div class="grid-header">
               <p>
@@ -99,12 +98,10 @@
                 John Horton Conway was born in 1937. He is known for the invention of the Game of Life, but he contributed to many areas
                 of science such as: the theory of finite groups, number theory, combinatorial game theory, coding theory
                 etc. He received various of prizes for his work:
-                <div class="grid-quote">
-                  <blockquote class="p--italic">Conway received the Berwick Prize (1971), was elected a Fellow of the Royal Society (1981), was the first
-                    recipient of the Pólya Prize (LMS) (1987), won the Nemmers Prize in Mathematics (1998) and received the
-                    Leroy P. Steele Prize for Mathematical Exposition (2000) of the American Mathematical Society.
-                  </blockquote>
-                </div>
+                <blockquote class="grid-quote">Conway received the Berwick Prize (1971), was elected a Fellow of the Royal Society (1981), was the first
+                  recipient of the Pólya Prize (LMS) (1987), won the Nemmers Prize in Mathematics (1998) and received the
+                  Leroy P. Steele Prize for Mathematical Exposition (2000) of the American Mathematical Society.
+                </blockquote>
               </p>
               <p>
                 The game shows that the evolution is determined by its initial state. You can interact with the Game of Life by creating
@@ -119,8 +116,8 @@
         </div>
       </article>
       <div class="header-element">
-        <div class="box--main">
-          <h2 class="header" id="about">Rules of the GAME
+        <div class="box--main box--main__header">
+          <h2 class="header" id="rules">Rules of the GAME
           </h2>
         </div>
       </div>
@@ -128,6 +125,10 @@
         <div class="box__content">
           <h3>Rules:</h3>
           <ul class="un-list">
+              <li class="un-list__li">each cell can be in one of two states: <strong>alive</strong> or <strong>dead</strong>
+              </li>
+              <li class="un-list__li">every cell has eight neighbours, which are the cells that are horizontally, vertically or diagonally adjacent
+              </li>
             <li class="un-list__li">live cells with fewer than
               <strong>two</strong> live neighbours dies, caused by
               <strong>underpopulation</strong>
@@ -147,40 +148,54 @@
     </section>
     <section>
       <div class="header-element">
-        <div class="box--main">
-          <h2 class="header" id="about">Play the GAME
+        <div class="box--main box--main__header">
+          <h2 class="header" id="game">Play the GAME
           </h2>
         </div>
       </div>
       <div class="box--main">
         <div class="box-game">
-          <div class="game">
+          <div class="game js-game">
           </div>
-          <div class="box-butons">
-            <form>
-              <input type="button" class="box-butons__button box-butons__button--start box-butons__button--small" value="&#9658;">
-              <input type="button" class="box-butons__button box-butons__button--stop box-butons__button--small" value="&#10074;&#10074;">
-              <input type="button" class="box-butons__button box-butons__button--reset box-butons__button--small" value="&#9724;">
-              <input type="button" class="box-butons__button box-butons__button--ex1 box-butons__button--big" value="example 1">
-              <input type="button" class="box-butons__button box-butons__button--ex2 box-butons__button--big" value="example 2">
-              <input type="button" class="box-butons__button box-butons__button--ex3 box-butons__button--big" value="example 3">
-            </form>
-          </div>
+          <form class="grid-box-buttons">
+            <input type="button" class="box-butons__button box-butons__button--start js-box-butons__button--start" value="&#9658;">
+            <input type="button" class="box-butons__button box-butons__button--stop js-box-butons__button--stop" value="&#10074;&#10074;">
+            <input type="button" class="box-butons__button box-butons__button--reset js-box-butons__button--reset" value="&#9724;">
+            <input type="button" class="box-butons__button box-butons__button--ex1 js-box-butons__button--ex1" value="example 1">
+            <input type="button" class="box-butons__button box-butons__button--ex2 js-box-butons__button--ex2" value="example 2">
+            <input type="button" class="box-butons__button box-butons__button--ex3 js-box-butons__button--ex3" value="example 3">
+          </form>
         </div>
       </div>
     </section>
     <section>
+      <div class="header-element">
+        <div class="box--main box--main__header">
+          <h2 class="header" id="contact">Contact
+          </h2>
+        </div>
+      </div>
       <div class="box--main">
-        <div class="box--center">
-          <h1 class="header" id="contact">Contact</h1>
-          <p>
-            <a href="" target="_blank">See my Linkedin profile.</a>
-            <strong>Email: </strong>elukaszewicz03@gmail.com
-          </p>
+        <div class="box__content box__content--center">
+          <svg alt="Contact button" class="img-svg img-svg--center">
+            <use xlink:href="#logo"></use>
+          </svg>
+          <div class="contact-box">
+              <p><strong class="font--uppercase">Elżbieta Łukaszewicz</strong></p>
+              <a class="contact-link" href="https://www.linkedin.com/in/el%C5%BCbieta-%C5%82ukaszewicz-50b673138/" target="_blank">Click here to see my Linkedin profile.</a>
+              <p>
+                <strong>Email: </strong>elukaszewicz03@gmail.com
+              </p>
+          </div>
+          
         </div>
       </div>
     </section>
   </main>
+  <footer class="footer-box">
+    <div class="img--center">
+    </div>
+  </footer>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="./js/gameDesign.js"></script>
   <noscript>Your browser does not support JavaScript.</noscript>

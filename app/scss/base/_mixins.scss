@@ -1,0 +1,12 @@
+@import "./variables";
+
+@mixin sgBreakpoint($name) {
+  $media: map-get($breakpointsMap, $name);
+  @if($media) {
+    @media #{$media} {
+      @content;
+    }
+  } @else {
+    @error 'Breakpoint "#{$name}" does not exist';
+  }
+}

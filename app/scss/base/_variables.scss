@@ -1,15 +1,36 @@
 $white: #FFF;
+$light-white: rgba(255, 255, 255, .7);
+$light-grey: #e1d9db;
 $black: #000;
-$light-pink: #fff4f7;
+$light-pink: #e4d0d5;
 $pink: #b9005a;
 $orange: #ff8400;
 $light-orange: #ffe4c6;
+$blue: #374d53;
+$light-blue: #c0c1cf;
+$very-light-green: #f1f7f3;
+
+
 $min-height: 509px;
 
 
-$font-family-primary: "Verdana, sans-serif";
+$font-family-primary: (Didot, serif);
+$font-family-headers: (Georgia, serif);
 $fontWeightBold: 700;
 $fontWeightBlack: 900;
 
 $img-header-mobile: "../images/header-mobile.png";
+$img-header-desktop: "../images/header.png";
 $img-main-mobile: "../images/header-bottom-mobile.png";
+
+// Breakpoints
+$breakpointMedium: 768px !default;
+$breakpointLarge: 1024px !default;
+
+$breakpointsMap: (
+  'small-only': '(max-width: #{$breakpointMedium - 1px})',
+  'medium-only': '(min-width: #{$breakpointMedium}) and (max-width: #{$breakpointLarge - 1px})',
+  'medium-down': '(max-width: #{$breakpointLarge - 1px})',
+  'medium-up': '(min-width: #{$breakpointMedium})',
+  'large-only': '(min-width: #{$breakpointLarge})'
+);
