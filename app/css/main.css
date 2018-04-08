@@ -19,12 +19,15 @@ html {
   width: 100%; }
 
 .box--main {
-  width: 90%;
+  max-width: 600px;
   margin: 0 auto;
   background-color: rgba(255, 255, 255, 0.7); }
-  @media (min-width: 768px) {
+  @media (min-width: 768px) and (max-width: 1023px) {
     .box--main {
-      width: 60%; } }
+      max-width: 700px; } }
+  @media (min-width: 1024px) {
+    .box--main {
+      max-width: 800px; } }
 
 .box--main__header {
   background: #e4d0d5; }
@@ -186,21 +189,38 @@ html {
 
 .game {
   border: 2px ridge black;
-  width: 100%;
+  margin: 0 auto;
+  width: 250px;
+  height: 250px;
   background-color: #e4d0d5;
   scroll-behavior: smooth; }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .game {
+      width: 500px;
+      height: 250px; } }
+  @media (min-width: 1024px) {
+    .game {
+      width: 800px;
+      height: 400px; } }
 
 .game > div {
-  height: 1.25%;
+  height: 2.5%;
   width: 100%; }
+  @media (min-width: 1024px) {
+    .game > div {
+      height: 1.25%;
+      width: 100%; } }
 
 .game > div > div {
-  width: 1.25%;
+  width: 2.5%;
   height: 100%;
   float: left;
   border-right: 0.1px solid #FFF;
   border-bottom: 0.1px solid #FFF; }
-  @media (min-width: 768px) {
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .game > div > div {
+      width: 1.25%; } }
+  @media (min-width: 1024px) {
     .game > div > div {
       width: 0.625%; } }
 

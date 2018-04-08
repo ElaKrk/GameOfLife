@@ -1,14 +1,18 @@
 document.addEventListener("DOMContentLoaded", function (event) {
 
+  //Name of interval of showing new stages of population
+  let gameStarted = false;
+  let gameloop;
+
   function clearGameArea() {
     const gameArea = document.querySelector(".js-game");
     gameArea.innerText = "";
   }
 
   //Create all areas in the game
-  function createAllareas(widthOfWindow) {
+  function createAllareas(heightOfWindow, widthOfWindow) {
     const gameArea = document.querySelector(".js-game");
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < heightOfWindow; i++) {
       const row = document.createElement("div");
       for (let j = 0; j < widthOfWindow; j++) {
         const field = document.createElement("div");
@@ -17,13 +21,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
       gameArea.appendChild(row);
     }
   }
-  
+
   function createGame(window) {
-    if (window.innerWidth > 768) {
-      createAllareas(160);
+    if (window.innerWidth < 768) {
+      createAllareas(40, 40);
+    } else if (window.innerWidth < 1024) {
+      createAllareas(40, 80);
     } else {
-      createAllareas(80);
-      
+      createAllareas(80, 160);
     }
   };
 
@@ -67,30 +72,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     title.appendChild(secondHorizontalLine);
   })
 
-  function adjustSizeOfGame(event) {
-    if (window.innerWidth > 768) {
-      const widthOfTheGame = game.offsetWidth;
-      game.style.height = `${widthOfTheGame/2}px`
-    } else {
-      const widthOfTheGame = game.offsetWidth;
-      game.style.height = `${widthOfTheGame}px`
-    }
-  }
-
-   
-  adjustBackgroundSizeToWindowHeight(window);
-  adjustSizeOfGame();
-  createGame(window);
-  
-
-  window.addEventListener("resize", () => {
-    adjustBackgroundSizeToWindowHeight(window);
-    adjustSizeOfGame();
-    clearGameArea();
-    createGame(window);
-  });
-
-
   const startButton = document.querySelector(".js-box-butons__button--start");
   const stopButton = document.querySelector(".js-box-butons__button--stop");
   const resetButton = document.querySelector(".js-box-butons__button--reset");
@@ -98,22 +79,40 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const configurationTwoButton = document.querySelector(".js-box-butons__button--ex2");
   const configurationThreeButton = document.querySelector(".js-box-butons__button--ex3");
 
-  const oneRow = document.querySelector(".js-game > div");
-  const listOfAreasInOneRow = oneRow.querySelectorAll("div");
-  const lengthOfRow = listOfAreasInOneRow.length;
-  const allRows = document.querySelectorAll(".js-game > div");
-  const numberOfRows = allRows.length;
-  const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
-  const numberOfAreasInGame = listOfAreasInGame.length;
+  function calculateTheLengthOfOneRow() {
+    const oneRow = document.querySelector(".js-game > div");
+    const listOfAreasInOneRow = oneRow.querySelectorAll("div");
+    const lengthOfRow = listOfAreasInOneRow.length;
 
-  const indexOfMiddleField = (((numberOfRows / 2) - 1) * lengthOfRow + (lengthOfRow / 2));
+    return lengthOfRow;
+  }
+
+  function calculateTheIndexOfMiddleField() {
+    const lengthOfRow = calculateTheLengthOfOneRow();
+    const allRows = document.querySelectorAll(".js-game > div");
+    const numberOfRows = allRows.length;
+
+    const indexOfMiddleField = (((numberOfRows / 2) - 1) * lengthOfRow + (lengthOfRow / 2));
+    
+    return indexOfMiddleField;
+  }
+
 
   // Set attribute for the area if clicked and unset it if clicked twice
-  (() => {
+  function setAttributeAliveIfClicked() {
+    const indexOfMiddleField = calculateTheIndexOfMiddleField();
+    
+    const lengthOfRow = calculateTheLengthOfOneRow();
+    
+    const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
+    const numberOfAreasInGame = listOfAreasInGame.length;
+
     for (let k = 0; k < numberOfAreasInGame; k += 1) {
       listOfAreasInGame[k].addEventListener("click", () => {
+        const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
+
         if (gameStarted == false) {
-          console.log("click");
+          console.log(indexOfMiddleField - k);
           if (listOfAreasInGame[k].hasAttribute("class") && gameStarted == false) {
             listOfAreasInGame[k].removeAttribute("class");
           } else if (gameStarted == false) {
@@ -122,14 +121,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
       })
     }
-  })();
-
-  //Name of interval of showing new stages of population
-  let gameloop;
-  let gameStarted = false;
+  };
 
   //Count alive neighbours for every area and create list containing those numbers
   function countingNeighbours() {
+    const allRows = document.querySelectorAll(".js-game > div");
+    const numberOfRows = allRows.length;
+    const lengthOfRow = calculateTheLengthOfOneRow();
+    
+    const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
     let numberOfAliveNeighbours = 0;
     let arrayOfNumberOfNeighbours = [];
     if (arrayOfNumberOfNeighbours.length === 0) {
@@ -168,6 +168,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
   function oneCycleOfLife() {
     const arrayOfNumberOfNeighbours = countingNeighbours();
     const lengthOfArrayOfNumberOfNeighbours = arrayOfNumberOfNeighbours.length;
+    const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
+    
 
     for (let i = 0; i < lengthOfArrayOfNumberOfNeighbours; i += 1) {
       if (listOfAreasInGame[i].hasAttribute("class")) {
@@ -180,44 +182,93 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 
-  function gameOfLife() {
-    startButton.addEventListener("click", () => {
-      gameStarted = true;
-      gameloop = setInterval(() => {
-        oneCycleOfLife()
-      }, 100);
-    })
+  function stopTheGame(event) {
+    gameStarted = false;
+    clearInterval(gameloop);
   }
 
-  function countAreasFromTheMiddle(list) {
-    const listOfAreasCountedFromTheMiddle = [];
-    for (let i = 0; i < list.length; i++) {
-      listOfAreasCountedFromTheMiddle.push(indexOfMiddleField + list[i]);
-      listOfAreasCountedFromTheMiddle.push(indexOfMiddleField - list[i]);
-    };
-    return listOfAreasCountedFromTheMiddle;
+  function stopTheGameOnClick() {
+    stopButton.removeEventListener("click", stopTheGame);
+    stopButton.addEventListener("click", stopTheGame);
+  }
+
+  function stopAndResetAllAreas() {
+    gameStarted = false;
+    clearInterval(gameloop);
+    clearAllAreas();
+  }
+
+  function stopAndResetAllAreasOnClick() {
+    resetButton.removeEventListener("click", stopAndResetAllAreas);
+    resetButton.addEventListener("click", stopAndResetAllAreas);
+  }
+
+  function gameOfLife (e) {
+    gameStarted = true;
+    gameloop = setInterval(() => {
+      oneCycleOfLife();
+    }, 100);
+
+    stopTheGameOnClick();
+    stopAndResetAllAreasOnClick();
+  }
+
+  function gameOfLifeOnClick() {
+    startButton.removeEventListener("click", gameOfLife)
+    startButton.addEventListener("click", gameOfLife)
   }
 
   function clearAllAreas() {
+    const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
+    const numberOfAreasInGame = listOfAreasInGame.length;
+
     for (let k = 0; k < numberOfAreasInGame; k += 1) {
       listOfAreasInGame[k].removeAttribute("class");
     }
   }
 
   function makeChosenAreasAlive(lengthOfList, list) {
+    const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
+    
     for (let i = 0; i < lengthOfList; i += 1) {
       listOfAreasInGame[list[i]].setAttribute("class", "game-area--alive");
     }
   }
 
+  function chooseListOfIndexedDependingOnWindowWidth(listForSmall, listForMedium, listForLarge) {
+    if (window.innerWidth < 768) {
+      return listForSmall;
+    } else if (window.innerWidth < 1024) {
+      return listForMedium;
+    } else {
+      return listForLarge;
+    }
+  }
+
   function exampleOne() {
+
     configurationOneButton.addEventListener("click", () => {
-      const listOne = [-1042, -1041, -1040, -1039, -962, -961, -958, -880, -877,
-      -799, -798, -562, -561, -482, -481, -402, -401, -330, -251, -249, -236,
-      -235, -234, -229, -228, -172, -169, -156, -155, -154, -149, -148, -92,
-      -90, -70, -68, -12, -11, -6, -5, -4, 9, 12, 68, 69, 74, 75, 76, 89, 91,
-        170, 241, 242, 321, 322, 401, 402, 638, 639, 717, 720, 798, 801, 802,
-        879, 880, 881, 882];
+
+      const indexOfMiddleField = calculateTheIndexOfMiddleField();
+      const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
+
+      const indexesForSmallWidth = [76, 75, 74, 34, 35, 36, -162, -202, -242, -241, -201, -161, -36, 
+        -76, -75, -35, -34, -74, 161, 162, 202, 242, 241, 201, 442, 441, 481, 482, 480, 479, 438, 397, 
+        358, 359, 400, 69, 29, 28, 68, -12, -52, -91, -130, -89, -49, -10, -442, -482, -481, -441, -480, 
+        -479, -438, -397, -358, -359, -400, -29, -69, -68, -28, 12, 52, 91, 130, 89, 49, 10];
+      const indexesForMediumWidth = [-1042, -1041, -1040, -1039, -962, -961, -958, -880, -877,
+        -799, -798, -562, -561, -482, -481, -402, -401, -330, -251, -249, -236,
+        -235, -234, -229, -228, -172, -169, -156, -155, -154, -149, -148, -92,
+        -90, -70, -68, -12, -11, -6, -5, -4, 9, 12, 68, 69, 74, 75, 76, 89, 91,
+          170, 241, 242, 321, 322, 401, 402, 638, 639, 717, 720, 798, 801, 802,
+          879, 880, 881, 882];
+      const indexesForLargeWidth = [156, 315, 314, 154, 155, -642, -802, -962, -961, -801, -316, 316, -641,
+      -156, -155, -315, -314, -154, 641, 642, 802, 962, 961, 801, 149, 148, 309, 308, -12, -172, -331, -490, 
+      -329, -169, -10, -1762, -1761, -1921, -1922, -1920, -1919, -1758, -1597, -1438, -1439, -1600, -309,
+    -148, -149, -308, 12, 172, 331, 490, 329, 169, 10, 1761, 1921, 1762, 1922, 1920, 1919, 1758, 1597, 1438, 1439, 1600];
+
+      const listOne = chooseListOfIndexedDependingOnWindowWidth(indexesForSmallWidth, indexesForMediumWidth, indexesForLargeWidth);
+
       const listOfAreasExOne = [];
       for (let i = 0; i < listOne.length; i++) {
         listOfAreasExOne.push(indexOfMiddleField + listOne[i]);
@@ -229,8 +280,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
   }
 
   function exampleTwo() {
+
     configurationTwoButton.addEventListener("click", () => {
-      const listTwo = [77, 76, 156, 157, -2, -83, -84, 316, 315, 395, 396, 478,
+     
+      const indexOfMiddleField = calculateTheIndexOfMiddleField();
+      const listOfAreasInGame = document.querySelectorAll(".js-game > div div");
+
+      const indexesForSmallWidth = [241, -241, -280, -239, -278, -237, 280, 239, 278, 237, 
+        -282, -243, -360, -401, -399, 7, -34, 46, -73, 87, 126, -114, 9, 50, -30, 282, 243,
+        360, 401, 399 ,-7, 34, -46, 73, -87, -126, 114, -9, -50, 30];
+      const indexesForMediumWidth = [77, 76, 156, 157, -2, -83, -84, 316, 315, 395, 396, 478,
         559, 562, 642, 712, 792, 872, 871, 790, 4, -76, 85, 86, 166, 167, 247,
         326, 8, 9, -70, -151, -152, -232, -231, -312, -393, -472, -471, -391,
         -148, -228, -67, -307, -306, -386, -225, -145, -65, 15, -64, -61, -141,
@@ -239,6 +298,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
         -1043, -1042, -1041, -648, -568, -569, -649, -657, -658, -578, -579, -739,
         -823, -905, -985, -1065, -827, -908, -909, -989, -1069, -1148, -1147, -1226,
         -1225, -1305, -1224, -1223, -1143, -1142];
+      const indexesForLargeWidth = [156, 155, 317, 476, 636, 635, 475, 955, 1115, 1114,
+      954, 1277, 1438, 1441, 1601, 1751, 1911, 2071, 2070, 1909, 163, 323, 484, 485,
+      645, 646, 806, 965, 327, 328, 169, 8, 7, -152, -153, -313, -474, -472, -632, -633, 
+      172, 11, -149, -308, -307, -467, -146, 14, 174, 175, 334, 178, 18, 179, 20, -140, -300,
+      -301, -302, -780, -940, -619, -618, -777, -937, -1098, -1099, -1271, -1431, -1430, -1270, 
+      -1764, -1763, -1762, -1446, -1286, -1126, -970, -969, -809, -810, -978, -979, -819, 
+      -820, -1140, -1304, -1466, -1626, -1786, -2106, -2266, -2105, -2104, -1944, -1943, -2107,
+      -1948, -1949, -1790, -1630, -1469, -1470, -1308, -2218, -2219, -2220];
+
+      const listTwo = chooseListOfIndexedDependingOnWindowWidth(indexesForSmallWidth, indexesForMediumWidth, indexesForLargeWidth);
+
       const listOfAreasExTwo = [];
       for (let i = 0; i < listTwo.length; i++) {
         listOfAreasExTwo.push(indexOfMiddleField + listTwo[i]);
@@ -251,33 +321,44 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   function exampleThree() {
     configurationThreeButton.addEventListener("click", () => {
-      const listThree = [2, 78, 82, 158, 160, 162];
-      const listOfAreasExThree = countAreasFromTheMiddle(listThree);
+      const indexOfMiddleField = calculateTheIndexOfMiddleField();
+      
+      const indexesForSmallWidth = [2, -2, -78, -80, -38, -82, -42, 78, 80, 38, 82, 42];
+      const indexesForMediumWidth = [2, -2, 78, -78, 82, -82, 158, -158, 160, -160, 162, -162];
+      const indexesForLargeWidth = [2, -2, 320, -320, -322, 322, -162, 162, 158, -158, 318, -318];
+
+      const listThree = chooseListOfIndexedDependingOnWindowWidth(indexesForSmallWidth, indexesForMediumWidth, indexesForLargeWidth);
+
+      const listOfAreasExThree = [];
+      for (let i = 0; i < listThree.length; i++) {
+        listOfAreasExThree.push(indexOfMiddleField + listThree[i]);
+      };
       const lengthListOfAreasExThree = listOfAreasExThree.length;
       clearAllAreas();
       makeChosenAreasAlive(lengthListOfAreasExThree, listOfAreasExThree);
     })
   }
 
-  function stopTheGame() {
-    stopButton.addEventListener("click", () => {
-      gameStarted = false;
-      clearInterval(gameloop);
-    })
-  }
-
-  function stopAndResetAllAreas() {
-    resetButton.addEventListener("click", () => {
-      gameStarted = false;
-      clearInterval(gameloop);
-      clearAllAreas();
-    })
-  }
-
-  gameOfLife();
-  stopTheGame();
-  stopAndResetAllAreas();
+  adjustBackgroundSizeToWindowHeight(window);
+  createGame(window);
+  setAttributeAliveIfClicked();
   exampleOne();
   exampleTwo();
   exampleThree();
+  gameOfLifeOnClick();
+
+
+  window.addEventListener("resize", (e) => {
+    gameStarted = false;
+    clearInterval(gameloop);
+    clearAllAreas();
+    adjustBackgroundSizeToWindowHeight(window);
+    clearGameArea();
+    createGame(window);
+    setAttributeAliveIfClicked();
+    exampleOne();
+    exampleTwo();
+    exampleThree();
+    gameOfLifeOnClick();
+  });
 });

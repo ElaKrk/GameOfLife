@@ -2,22 +2,39 @@
 
 .game {
     border: 2px ridge black;
-    width: 100%;
+    margin: 0 auto;
+    width: 250px;
+    height: 250px;
     background-color: $light-pink;
     scroll-behavior: smooth;
+    @include sgBreakpoint(medium-only){
+      width: 500px;
+      height: 250px;
+    }
+    @include sgBreakpoint(large-only){
+      width: 800px;
+      height: 400px;
+    }
 }
 .game > div {
-  height: 1.25%;
+  height: 2.5%;
   width: 100%;
 
+  @include sgBreakpoint(large-only){
+    height: 1.25%;
+    width: 100%;
+  }
 }
 .game > div > div {
-  width: 1.25%;
+  width: 2.5%;
   height: 100%;
   float: left;
   border-right: .1px solid $white;
   border-bottom: .1px solid $white;
-  @include sgBreakpoint(medium-up){
+  @include sgBreakpoint(medium-only){
+    width: 1.25%;
+  }
+  @include sgBreakpoint(large-only){
     width: 0.625%;
   }
 }
